@@ -1,0 +1,26 @@
+@model System.Collections.Generic.List<Bloggie.Models.Domain.Tag>
+
+@{
+    ViewData["Title"] = "All Tags";
+}
+
+<div class="py-3">
+    <table class="table table-striped">
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Display Name</th>
+        </thead>
+        <tbody>
+            @foreach (var tag in Model)
+            {
+                <tr>
+                    <td> @tag.Id</td>
+                    <td> @tag.Name</td>
+                    <td> @tag.DisplayName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
