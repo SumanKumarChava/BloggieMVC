@@ -4,23 +4,43 @@
     ViewData["Title"] = "All Tags";
 }
 
-<div class="py-3">
-    <table class="table table-striped">
-        <thead>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Display Name</th>
-        </thead>
-        <tbody>
-            @foreach (var tag in Model)
-            {
-                <tr>
-                    <td> @tag.Id</td>
-                    <td> @tag.Name</td>
-                    <td> @tag.DisplayName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="bg-opacity-10 py-2">
+    
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="container">
+            <h1>Tags List - Admin Functionality</h1>
+        </div>
+
+        <div class="container py-3">
+            <table class="table table-striped">
+                <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Display Name</th>
+                <th> </th>
+                </thead>
+                <tbody>
+                @foreach (var tag in Model)
+                {
+                    <tr>
+                        <td> @tag.Id</td>
+                        <td> @tag.Name</td>
+                        <td> @tag.DisplayName</td>
+                        <td>
+                            <a asp-area="" asp-controller="AdminTags" asp-action="Edit" asp-route-Id="@tag.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <h3> No Tags found in database </h3>
+    }
+    
+    
 
 </div>

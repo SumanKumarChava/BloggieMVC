@@ -40,5 +40,23 @@ public class AdminTagsController : Controller
         return View(tags);
     }
     
+    [HttpGet]
+    public IActionResult Edit(string Id)
+    {
+        Guid tagId = new Guid(Id);
+        var tag = _bloggieDbContext.Tags.ToList().FirstOrDefault(t => t.Id == tagId);
+        return View(tag);
+    }
+
+    [HttpPost]
+    [ActionName("Edit")]
+    public IActionResult Edit(Tag tag)
+    {
+        var dbTag = _bloggieDbContext.Tags.FirstOrDefault((t => t.Id == tag.Id));
+        dbTag.DisplayName = tag.DisplayName;
+        dbTag.Name = tag.Name;
+        _bloggieDbContext.SaveChanges();
+        return View("Edit");
+    }
     
 }
