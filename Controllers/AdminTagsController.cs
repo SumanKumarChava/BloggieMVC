@@ -30,7 +30,7 @@ public class AdminTagsController : Controller
             DisplayName = request.DisplayName
         });
         _bloggieDbContext.SaveChanges();
-        return View("Add");
+        return RedirectToAction("GetTags");
     }
 
     [HttpGet]
@@ -53,10 +53,33 @@ public class AdminTagsController : Controller
     public IActionResult Edit(Tag tag)
     {
         var dbTag = _bloggieDbContext.Tags.FirstOrDefault((t => t.Id == tag.Id));
-        dbTag.DisplayName = tag.DisplayName;
-        dbTag.Name = tag.Name;
-        _bloggieDbContext.SaveChanges();
-        return View("Edit");
+        if (dbTag != null)
+        {
+            dbTag.DisplayName = tag.DisplayName;
+            dbTag.Name = tag.Name;
+            _bloggieDbContext.SaveChanges();
+            return RedirectToAction("GetTags");
+        }
+
+        return RedirectToAction("Edit", new
+        {
+            Id = tag.Id
+        });
+    }
+    
+    [HttpPost]
+    [ActionName("Delete")]
+    public IActionResult Delete(string Id)
+    {
+        Guid tagId = new Guid(Id);
+        var tag = _bloggieDbContext.Tags.ToList().FirstOrDefault(t => t.Id == tagId);
+        if (tag != null)
+        {
+            _bloggieDbContext.Tags.Remove(tag);
+            _bloggieDbContext.SaveChanges();
+            return RedirectToAction("GetTags");
+        }
+        return RedirectToAction("Edit", new { Id = Id });
     }
     
 }
