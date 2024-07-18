@@ -26,6 +26,6 @@ public class AddBlogPostRequest
     // Display tags list
     public IEnumerable<SelectListItem> Tags { get; set; }
 
-    public string SelectedTag { get; set; }
+    public string[] SelectedTags { get; set; }
 
 }

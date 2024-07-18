@@ -1,3 +1,4 @@
+using Bloggie.Models.Domain;
 using Bloggie.Models.ViewModels;
 using Bloggie.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +9,12 @@ namespace Bloggie.Controllers;
 public class AdminBlogPostController : Controller
 {
     private readonly ITagRepository _tagRepository;
+    private readonly IBlogRepositiory _blogRepositiory;
 
-    public AdminBlogPostController(ITagRepository tagRepository)
+    public AdminBlogPostController(ITagRepository tagRepository, IBlogRepositiory blogRepositiory)
     {
         _tagRepository = tagRepository;
+        _blogRepositiory = blogRepositiory;
     }
 
     [HttpGet]
@@ -26,8 +29,31 @@ public class AdminBlogPostController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddBlogPostRequest request)
     {
-        var a = request;
-        return View("Add");
+        var blogpost = new BlogPost()
+        {
+            Author = request.Author,
+            ShortDescription = request.ShortDescription,
+            Content = request.Content,
+            Heading = request.Heading,
+            PageTitle = request.PageTitle,
+            IsVisible = request.IsVisible,
+            PublishedDate = request.PublishedDate,
+            UrlHandle = request.UrlHandle,
+            FeaturedImageUrl = request.FeaturedImageUrl,
+        };
+
+        ICollection<Tag> tags = new List<Tag>();
+        foreach (var item in await _tagRepository.GetAllAsync())
+        {
+            if (request.SelectedTags.Any(x => x == item.Id.ToString()))
+            {
+                tags.Add(item);
+            }
+        }
+
+        blogpost.Tags = tags;    
+        var blogPost = await _blogRepositiory.AddAsync(blogpost);
+        return RedirectToAction("Add");
     }
     
 }

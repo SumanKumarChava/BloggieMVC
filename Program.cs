@@ -16,6 +16,7 @@ public class Program
             options.UseSqlServer(builder.Configuration.GetConnectionString("BloggieDbConnectionString")));
 
         builder.Services.AddScoped<ITagRepository, TagRepository>();
+        builder.Services.AddScoped<IBlogRepositiory, BlogRepository>();
         
         var app = builder.Build();
 
