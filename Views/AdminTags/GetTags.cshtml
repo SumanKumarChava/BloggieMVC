@@ -1,4 +1,4 @@
-@model System.Collections.Generic.List<Bloggie.Models.Domain.Tag>
+@model System.Collections.Generic.IEnumerable<Bloggie.Models.Domain.Tag>
 
 @{
     ViewData["Title"] = "All Tags";
@@ -6,7 +6,7 @@
 
 <div class="bg-opacity-10 py-2">
     
-    @if (Model != null && Model.Count > 0)
+    @if (Model != null && Model.Any())
     {
         <div class="container">
             <h1>Tags List - Admin Functionality</h1>

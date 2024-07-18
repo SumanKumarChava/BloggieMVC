@@ -1,6 +1,7 @@
 using Bloggie.Data;
 using Bloggie.Models.Domain;
 using Bloggie.Models.ViewModels;
+using Bloggie.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +9,11 @@ namespace Bloggie.Controllers;
 
 public class AdminTagsController : Controller
 {
-    private readonly BloggieDbContext _bloggieDbContext;
+    private readonly ITagRepository _tagRepository;
 
-    public AdminTagsController(BloggieDbContext bloggieDbContext)
+    public AdminTagsController(ITagRepository tagRepository)
     {
-        _bloggieDbContext = bloggieDbContext;
+        _tagRepository = tagRepository;
     }
     // GET
     //[HttpGet]
@@ -25,19 +26,18 @@ public class AdminTagsController : Controller
     [ActionName("Add")]
     public async Task<IActionResult> Add(AddTagRequest request)
     {
-        await _bloggieDbContext.Tags.AddAsync(new Tag()
+        var addedTag = await _tagRepository.AddAsync(new Tag()
         {
             Name = request.Name,
             DisplayName = request.DisplayName
         });
-        await _bloggieDbContext.SaveChangesAsync();
         return RedirectToAction("GetTags");
     }
 
     [HttpGet]
     public async Task<IActionResult> GetTags()
     {
-        var tags = await _bloggieDbContext.Tags.ToListAsync();
+        var tags = await _tagRepository.GetAllAsync();
         return View(tags);
     }
     
@@ -45,7 +45,7 @@ public class AdminTagsController : Controller
     public async Task<IActionResult> Edit(string id)
     {
         Guid tagId = new Guid(id);
-        var tag = (await _bloggieDbContext.Tags.ToListAsync()).FirstOrDefault(t => t.Id == tagId);
+        var tag = await _tagRepository.GetAsync(tagId);
         return View(tag);
     }
 
@@ -53,19 +53,18 @@ public class AdminTagsController : Controller
     [ActionName("Edit")]
     public async Task<IActionResult> Edit(Tag tag)
     {
-        var dbTag = await _bloggieDbContext.Tags.FirstOrDefaultAsync((t => t.Id == tag.Id));
-        if (dbTag != null)
+        var updatedTag = await _tagRepository.UpdateAsync(tag);
+        if (updatedTag != null)
         {
-            dbTag.DisplayName = tag.DisplayName;
-            dbTag.Name = tag.Name;
-            await _bloggieDbContext.SaveChangesAsync();
             return RedirectToAction("GetTags");
         }
-
-        return RedirectToAction("Edit", new
+        else
         {
-            Id = tag.Id
-        });
+            return RedirectToAction("Edit", new
+            {
+                Id = tag.Id
+            });
+        }
     }
     
     [HttpPost]
@@ -73,14 +72,16 @@ public class AdminTagsController : Controller
     public async Task<IActionResult> Delete(string id)
     {
         Guid tagId = new Guid(id);
-        var tag = (await _bloggieDbContext.Tags.ToListAsync()).FirstOrDefault(t => t.Id == tagId);
+        var tag = await _tagRepository.DeleteAsync(tagId);
         if (tag != null)
         {
-            _bloggieDbContext.Tags.Remove(tag);
-            await _bloggieDbContext.SaveChangesAsync();
             return RedirectToAction("GetTags");
         }
-        return RedirectToAction("Edit", new { Id = id });
+        else
+        {
+            return RedirectToAction("Edit", new { Id = id });
+        }
+        
     }
     
 }
