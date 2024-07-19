@@ -5,6 +5,7 @@ namespace Bloggie.Models.ViewModels;
 
 public class AddBlogPostRequest
 {
+    public Guid Id { get; set; }
     public string Heading { get; set; }
     
     public string PageTitle { get; set; }

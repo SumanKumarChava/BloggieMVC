@@ -16,18 +16,22 @@
             <th>Id</th>
             <th>Title</th>
             <th>Tags</th>
+            <th> </th>
         </thead>
         <tbody>
         @foreach (var item in Model)
         {
             <tr>
                 <td>@item.Id</td>
-                <td>@item.Heading</td>
+                <td>@item.PageTitle</td>
                 <td>
-                @foreach (var tag in item.Tags)
-                {
-                    <div class="badge bg-primary">@tag.Name</div>
-                }
+                    @foreach (var tag in item.Tags)
+                    {
+                        <div class="badge bg-primary">@tag.Name</div>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-area="" asp-controller="AdminBlogPost" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                 </td>
             </tr>
         }
