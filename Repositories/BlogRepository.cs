@@ -14,12 +14,12 @@ public class BlogRepository : IBlogRepositiory
     }
     public async Task<IEnumerable<BlogPost>> GetAllAsync()
     {
-        return  await _bloggieDbContext.BlogPosts.ToListAsync();
+        return  await _bloggieDbContext.BlogPosts.Include(t => t.Tags).ToListAsync();
     }
 
     public async Task<BlogPost?> GetAsync(Guid id)
     {
-        var blogPost = await _bloggieDbContext.BlogPosts.FirstOrDefaultAsync(t => t.Id == id);
+        var blogPost = await _bloggieDbContext.BlogPosts.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == id);
         return blogPost;
     }
 

@@ -1,0 +1,37 @@
+@model System.Collections.Generic.IEnumerable<Bloggie.Models.Domain.BlogPost>
+@{
+    ViewData["title"] = "Blogposts";
+}
+
+
+<div class="bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Blogposts List - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="py-2">
+    <table class="table table-striped">
+        <thead>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Tags</th>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Heading</td>
+                <td>
+                @foreach (var tag in item.Tags)
+                {
+                    <div class="badge bg-primary">@tag.Name</div>
+                }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>
