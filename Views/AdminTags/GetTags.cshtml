@@ -5,13 +5,13 @@
 }
 
 <div class="bg-opacity-10 py-2">
-    
+
+    <div class="container">
+        <h1>Tags List - Admin Functionality</h1>
+    </div>
+
     @if (Model != null && Model.Any())
     {
-        <div class="container">
-            <h1>Tags List - Admin Functionality</h1>
-        </div>
-
         <div class="container py-3">
             <table class="table table-striped">
                 <thead>
@@ -38,9 +38,7 @@
     }
     else
     {
-        <h3> No Tags found in database </h3>
+        <div class="container py-5">No Tags exist</div>
     }
-    
-    
 
 </div>

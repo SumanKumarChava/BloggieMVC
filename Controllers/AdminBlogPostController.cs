@@ -45,7 +45,7 @@ public class AdminBlogPostController : Controller
         ICollection<Tag> tags = new List<Tag>();
         foreach (var item in await _tagRepository.GetAllAsync())
         {
-            if (request.SelectedTags.Any(x => x == item.Id.ToString()))
+            if (request.SelectedTags!= null && request.SelectedTags.Any(x => x == item.Id.ToString()))
             {
                 tags.Add(item);
             }
@@ -136,6 +136,17 @@ public class AdminBlogPostController : Controller
             return RedirectToAction("List");
         }
         return View("Edit");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var blog = await _blogRepositiory.DeleteAsync(id);
+        if (blog != null)
+        {
+            return RedirectToAction("List");
+        }
+        return View("List");
     }
     
 }

@@ -22,5 +22,5 @@ public class BlogPost
     
     public bool IsVisible { get; set; }
     
-    public ICollection<Tag> Tags { get; set; }
+    public ICollection<Tag>? Tags { get; set; }
 }
