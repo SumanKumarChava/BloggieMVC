@@ -53,7 +53,7 @@ public class AdminBlogPostController : Controller
 
         blogpost.Tags = tags;    
         var blogPost = await _blogRepositiory.AddAsync(blogpost);
-        return RedirectToAction("Add");
+        return RedirectToAction("List");
     }
 
     [HttpGet]

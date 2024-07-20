@@ -40,6 +40,20 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Featured Image Upload</label>
+            <input type="file" id="featuredImageUpload" class="form-control"/>
+            @if (Model.FeaturedImageUrl != null)
+            {
+                <img class="form-control my-3" src="@Model.FeaturedImageUrl" id="displayImage" alt="blank" style="height: 300px; width:500px; display : block"/>
+            }
+            else
+            {
+                <img class="form-control my-3" id="displayImage" alt="blank" style="height: 300px; width:500px; display : none"/>
+            }
+            
+        </div>
+        
+        <div class="mb-3">
             <label class="form-label">Image URL</label>
             <input type="text" id="featuredImageUrl" class="form-control" asp-for="FeaturedImageUrl"/>
         </div>
@@ -73,7 +87,7 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-dark">Submit</button>
+            <button type="submit" class="btn btn-dark">Update</button>
             <a class="btn btn-danger" asp-controller="AdminBlogPost" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
         </div>
 
@@ -83,6 +97,33 @@
 @section Scripts
 {
     <script>
-        var editor = new FroalaEditor('#content');
+        var editor = new FroalaEditor('#content', {
+            imageUploadURL : '/api/images'
+        });
+        
+        var formUploadControl = document.getElementById('featuredImageUpload');
+        var imageUrlElement = document.getElementById('featuredImageUrl');
+        var displayImage = document.getElementById('displayImage');
+        formUploadControl.addEventListener('change',uploadFeaturedImage);
+
+        async function uploadFeaturedImage(e){
+            var data = new FormData();
+            data.append('file',e.target.files[0]);
+
+            await fetch('/api/images',{
+                method : 'POST',
+                headers : {
+                    'Accept': '*/*',
+                },
+                body : data
+            }).then(response => response.json())
+                .then(result =>
+                {
+                    imageUrlElement.value = result.link;
+                    displayImage.src = result.link;
+                    displayImage.style.display = 'block';
+                });
+        }
+
     </script>
 }

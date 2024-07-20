@@ -71,7 +71,7 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-dark">Submit</button>
+            <button type="submit" class="btn btn-dark">Save</button>
         </div>
         
     </form>
@@ -80,7 +80,10 @@
 @section Scripts
 {
     <script>
-        var editor = new FroalaEditor('#content');
+        var editor = new FroalaEditor('#content', {
+            imageUploadURL : '/api/images'
+        });
+        
         var formUploadControl = document.getElementById('featuredImageUpload');
         var imageUrlElement = document.getElementById('featuredImageUrl');
         var displayImage = document.getElementById('displayImage');
