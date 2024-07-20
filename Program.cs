@@ -17,6 +17,7 @@ public class Program
 
         builder.Services.AddScoped<ITagRepository, TagRepository>();
         builder.Services.AddScoped<IBlogRepositiory, BlogRepository>();
+        builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
         
         var app = builder.Build();
 
