@@ -32,6 +32,12 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Featured Image Upload</label>
+            <input type="file" id="featuredImageUpload" class="form-control"/>
+            <img class="form-control my-3" id="displayImage" alt="blank" style="height: 300px; width:500px; display : none"/>
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Image URL</label>
             <input type="text" id="featuredImageUrl" class="form-control" asp-for="FeaturedImageUrl"/>
         </div>
@@ -75,5 +81,29 @@
 {
     <script>
         var editor = new FroalaEditor('#content');
+        var formUploadControl = document.getElementById('featuredImageUpload');
+        var imageUrlElement = document.getElementById('featuredImageUrl');
+        var displayImage = document.getElementById('displayImage');
+        formUploadControl.addEventListener('change',uploadFeaturedImage);
+        
+        async function uploadFeaturedImage(e){
+            var data = new FormData();
+            data.append('file',e.target.files[0]);
+            
+            await fetch('/api/images',{
+                method : 'POST',
+                headers : {
+                    'Accept': '*/*',
+                },
+                body : data
+            }).then(response => response.json())
+            .then(result => 
+                    { 
+                        imageUrlElement.value = result.link;
+                        displayImage.src = result.link;
+                        displayImage.style.display = 'block';
+                     });
+        }
+        
     </script>
 }
