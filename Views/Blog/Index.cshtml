@@ -1,0 +1,37 @@
+@model Bloggie.Models.Domain.BlogPost?
+
+@{
+    ViewData["Title"] = Model.PageTitle;
+}
+
+<div class="container my-5">
+    <div class="row  justify-content-center">
+        <div class="col-12 col-lg-10">
+            @if (Model != null)
+            {
+                <h1 class="mb-3">@Model.Heading</h1>
+                <div class="d-flex mb-3 justify-content-between">
+                    <span class="text-secondary">@Model.Author</span>
+                    <span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
+                </div>
+                <div class="mb-3">
+                    @if (@Model.Tags != null)
+                    {
+                        foreach (var tag in @Model.Tags)
+                        {
+                            <div class="badge bg-secondary p-2">@tag.DisplayName</div>
+                        }
+                    }
+                </div>
+                <img src="@Model.FeaturedImageUrl" class="mb-3 d-block img-fluid"></img>
+                <div class="mb-3">@Html.Raw(@Model.Content)</div>
+            }
+            else
+            {
+                <p>Blog post not found</p>
+            }
+
+        </div>
+    </div>
+
+</div>
