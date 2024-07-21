@@ -1,8 +1,59 @@
-﻿@{
+﻿@model Bloggie.Models.ViewModels.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container col-xxl-8 px-4 py-4">
+    <div class="row align-items-center g-5 py-5">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-4">Anil Dirubhai Ambani</h1>
+            <p class="lead">
+                Anil Dhirubhai Ambani (born 4 June 1959) is an Indian businessman, chairman and managing director of Reliance Group (a.k.a. Reliance ADA Group). The Reliance Group was created in July 2006 following a demerger from Reliance Industries Limited. He led several stocks listed corporations including Reliance Capital,[2] Reliance Infrastructure,[3] Reliance Power and Reliance Communications.[4]
+            </p>
+        </div>
+        
+        <div class="col-12 col-lg-6">
+            <img class="d-block img-fluid mx-lg-auto" width="500px" src="https://images.pexels.com/photos/15829424/pexels-photo-15829424/free-photo-of-couple-sitting-on-a-bench-and-looking-at-mount-fuji.jpeg?auto=compress&cs=tinysrgb&w=800"/>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-10 d-flex">
+            @if (Model.Tags != null && Model.Tags.Any())
+            {
+                foreach (var tag in Model.Tags)
+                {
+                    <div class="mb-5 bg-dark py-1 badge mx-1">@tag.DisplayName</div>
+                }
+            }
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-10">
+            @if (Model.Blogs != null && Model.Blogs.Any())
+            {
+                foreach (var blogPost in Model.Blogs)
+                {
+                    <div class="mb-5 bg-light box-shadow">
+                        <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid"/>
+                        <h2 class="mb-4">@blogPost.Heading</h2>
+                        <p class="mb-2"> <b>Author:</b> @blogPost.Author</p>
+                        <p class="mb-4"> <b>Published Date:</b> @blogPost.PublishedDate</p>
+                        <div class="mb-3">
+                            @foreach (var tag in blogPost.Tags)
+                            {
+                            <div class="badge bg-secondary p-2">@tag.DisplayName</div>
+                            }
+                        </div>
+                        <p class="mb-3">@blogPost.ShortDescription</p>
+                        
+                        <a class="mb-2 btn btn-dark" href="#">Read more</a>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+
 </div>
